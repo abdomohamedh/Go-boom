@@ -1,42 +1,52 @@
 import java.util.List;
 import java.util.ArrayList;
 class Game {
+    private Center center;
+    private Deck shuffleDeck;
     private Deck deck;
+    private List<Integer> scores;
     private List<Player> players;
     private Card leadCard;
     private int currentPlayerIndex;
+    private Center card;
     public Game() {
         deck = new Deck();
         players = new ArrayList<>();
+        scores = new ArrayList<>();
+        center = new Center();
         currentPlayerIndex = 1;
     }
     
     public void startGame() {
         deck.initializeDeck();
         deck.shuffleDeck();
-    
-        for (int i = 0; i < 4; i++) {
-            Player player = new Player("Player" + (i + 1));
-            players.add(player);
-        }
-    
         dealCards();
-    
         leadCard = deck.dealCard();
-        System.out.println("First lead card: " + leadCard.getSuit() + " " + leadCard.getRank());
-    
+        
+        for (int i = 1; i <= 4; i++) {
+            Player player = new Player("Player" + (i));
+            players.add(player);
+            scores.add(0);
+            System.out.println();
+
+            System.out.print("player" + i + ": " + "[");
+         for(int d = 0; d <= 6; d++){
+            System.out.print(deck.dealCard() + ", "); 
+            }
+            
+        }
         setFirstPlayer();
-    
         playGame();
     }
-    
+
     private void dealCards() {
         for (Player player : players) {
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i <= 7; i++) {
                 Card card = deck.dealCard();
                 player.receiveCard(card);
             }
         }
+
     }
     
     private void setFirstPlayer() {
@@ -46,7 +56,21 @@ class Game {
             case "3", "7", "J" -> currentPlayerIndex = 2; // Player3
             case "4", "8", "Q" -> currentPlayerIndex = 3; // Player4
     }
-    System.out.println("First player: " + players.get(currentPlayerIndex).getName());
+    System.out.println();
+    System.out.println("Center: " + center.getCards());
+    System.out.println("Deck: "+ "[ " + deck.dealCard() + " ]");
+    System.out.println("Turn: " + players.get(currentPlayerIndex).getName());
+    System.out.print(" Score: ");
+    for (int i = 0; i < players.size(); i++) {
+        Player player = players.get(i);
+        System.out.print(  player.getName() + " = " + scores.get(i)+ " | ");
+    }
+    
+    System.out.println();
+
+    System.out.println("> " + leadCard.getSuit() + " " + leadCard.getRank());
+    
+       
     }
     private int determineTrickWinner() {
         int maxRankIndex = -1;
@@ -89,7 +113,7 @@ class Game {
             Card playedCard = currentPlayer.getHand().get(0); // For simplicity, always play the first card
     
             if (currentPlayer.canPlayCard(playedCard, leadCard)) {
-                System.out.println(currentPlayer.getName() + " plays: " + playedCard.getSuit() + " " + playedCard.getRank());
+                System.out.println(currentPlayer.getName() + " plays:[ " + playedCard.getSuit() + " " + playedCard.getRank()+ "]");
                 currentPlayer.playCard(playedCard);
     
                 // Update lead card for next turn
@@ -105,6 +129,8 @@ class Game {
             break;
         }
         System.out.println("Game over!");
+
+      
         
     }
 }

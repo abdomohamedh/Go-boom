@@ -6,9 +6,8 @@ class Deck {
     public Deck() {
         cards = new ArrayList<>();
     }
-    
     public void initializeDeck() {
-        String[] suits = {"H", "D", "C", "S"};
+        String[] suits = {"♣", "♦", "♥", "♠"};
         String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     
         for (String suit : suits) {
@@ -21,10 +20,12 @@ class Deck {
     
     public void shuffleDeck() {
         Collections.shuffle(cards);
+        
     }
     
     public Card dealCard() {
         if (cards.isEmpty()) {
+
             return null; // Or handle deck exhaustion as desired
         }
         return cards.remove(0);

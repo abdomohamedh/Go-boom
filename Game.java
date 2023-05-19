@@ -2,14 +2,12 @@ import java.util.List;
 import java.util.ArrayList;
 class Game {
     private Center center;
-    private Deck shuffleDeck;
     private Deck deck;
     private List<Integer> scores;
     private List<Player> players;
     private Card leadCard;
     private int currentPlayerIndex;
-    private Center card;
-    public Game() {
+        public Game() {
         deck = new Deck();
         players = new ArrayList<>();
         scores = new ArrayList<>();
@@ -31,9 +29,11 @@ class Game {
 
             System.out.print("player" + i + ": " + "[");
          for(int d = 0; d <= 6; d++){
-            System.out.print(deck.dealCard() + ", "); 
-            }
-            
+            if(d == 6){ System.out.print(deck.dealCard() + "] ");
+            } else {
+            System.out.print(deck.dealCard() + ", ");
+}
+}  
         }
         setFirstPlayer();
         playGame();
@@ -51,14 +51,29 @@ class Game {
     
     private void setFirstPlayer() {
         switch (leadCard.getRank()) {
-            case "A", "5", "9", "K" -> currentPlayerIndex = 0; // Player1
-            case "2", "6", "10" -> currentPlayerIndex = 1; // Player2
-            case "3", "7", "J" -> currentPlayerIndex = 2; // Player3
-            case "4", "8", "Q" -> currentPlayerIndex = 3; // Player4
+            case "A":
+            case "5": 
+            case "9": 
+            case "K": currentPlayerIndex = 0; // Player1
+            case "2": 
+            case "6":
+            case "10":  currentPlayerIndex = 1; // Player2
+            case "3": 
+            case "7": 
+            case "J":  currentPlayerIndex = 2; // Player3
+            case "4": 
+            case "8":
+            case  "Q":   currentPlayerIndex = 3; // Player4
     }
     System.out.println();
     System.out.println("Center: " + center.getCards());
-    System.out.println("Deck: "+ "[ " + deck.dealCard() + " ]");
+    System.out.print("Deck: "+ "[");
+    for (int i = 0; i < deck.getCards().size(); i++){
+        System.out.print(deck.getCards().get(i) + ", ");
+
+    }
+    System.out.println("] ");
+
     System.out.println("Turn: " + players.get(currentPlayerIndex).getName());
     System.out.print(" Score: ");
     for (int i = 0; i < players.size(); i++) {
@@ -72,7 +87,7 @@ class Game {
     
        
     }
-    private int determineTrickWinner() {
+    public int determineTrickWinner() {
         int maxRankIndex = -1;
         int maxRank = -1;
         
@@ -107,7 +122,7 @@ class Game {
             return Integer.parseInt(rank);
         }
     }
-    private void playGame() {
+    public void playGame() {
         while (!players.get(currentPlayerIndex).getHand().isEmpty()) {
             Player currentPlayer = players.get(currentPlayerIndex);
             Card playedCard = currentPlayer.getHand().get(0); // For simplicity, always play the first card
